@@ -93,23 +93,18 @@ def read_csv(url):
 
 def remove_unique_feature(df):
 	try:
-		if isinstance(df,pd.DataFrame)) == True and len(df.columns) > 1:
+		if isinstance(df,pd.DataFrame) == True and len(df.columns) > 1:
 			df = df.drop_duplicates()
 			i = 0
 			features_list = df.columns 
 			while i < len(features_list): 
 				if len(df[features_list[i]].unique()) == 1: 
 					df.drop(features_list[i], 1, inplace=True) 
+				else:
+					pass
 				i += 1 
 			return df
 		else:
 			return False
 	except:
 		return False
-
-
-
-
-
-
-

@@ -31,3 +31,15 @@ def test_http_check3():
 def test_http_check4():
 	assert isinstance(utils.read_csv(3),pd.DataFrame) == False
 
+
+def test_remove_unique_feature1():
+	df = utils.read_csv('https://raw.githubusercontent.com/elBichon/online_machine_learning/main/titanic/train.csv')
+	assert isinstance(utils.remove_unique_feature(df),pd.DataFrame) == True
+def test_remove_unique_feature2():
+	assert isinstance(utils.remove_unique_feature(''),pd.DataFrame) == False
+def test_remove_unique_feature3():
+	assert isinstance(utils.remove_unique_feature('12132'),pd.DataFrame) == False
+def test_remove_unique_feature3():
+	data = {'col_1': [3, 2, 1, 0]}
+	df = pd.DataFrame.from_dict(data)
+	assert isinstance(utils.remove_unique_feature(3),pd.DataFrame) == False
