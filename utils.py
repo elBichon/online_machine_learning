@@ -83,8 +83,26 @@ def http_check(url):
 def read_csv(url):
 	try:
 		if len(url) > 0 and isinstance(url,str) == True: 
-			s = requests.get(url).content
-			df = pd.read_csv(io.StringIO(s.decode('utf-8')))
+			df = pd.read_csv(url)
+			return df
+		else:
+			return False
+	except:
+		return False
+
+
+def remove_unique_feature(df):
+	try:
+		if isinstance(df,pd.DataFrame) == True and len(df.columns) > 1:
+			df = df.drop_duplicates()
+			i = 0
+			features_list = df.columns 
+			while i < len(features_list): 
+				if len(df[features_list[i]].unique()) == 1: 
+					df.drop(features_list[i], 1, inplace=True) 
+				else:
+					pass
+				i += 1 
 			return df
 		else:
 			return False
