@@ -1,4 +1,5 @@
 import re
+import requests
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -57,5 +58,16 @@ def url_validate(url):
 	except:
 		return False
 
-url = 'https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv'
-print(url_validate(url))
+def http_check(url):
+	try:
+		if len(url) > 0 and isinstance(url,str) == True: 
+			r = requests.get(url)
+			status_code = r.status_code
+			if status_code == 200:
+				return True
+			else:
+				return False
+		else:
+			return False
+	except:
+		return False
