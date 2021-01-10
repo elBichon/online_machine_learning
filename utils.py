@@ -1,5 +1,11 @@
 import re
 import requests
+import pandas as pd
+import io
+
+url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
+s=requests.get(url).content
+c=pd.read_csv(io.StringIO(s.decode('utf-8')))
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -58,6 +64,7 @@ def url_validate(url):
 	except:
 		return False
 
+
 def http_check(url):
 	try:
 		if len(url) > 0 and isinstance(url,str) == True: 
@@ -67,6 +74,18 @@ def http_check(url):
 				return True
 			else:
 				return False
+		else:
+			return False
+	except:
+		return False
+
+
+def read_csv(url):
+	try:
+		if len(url) > 0 and isinstance(url,str) == True: 
+			s = requests.get(url).content
+			df = pd.read_csv(io.StringIO(s.decode('utf-8')))
+			return df
 		else:
 			return False
 	except:
