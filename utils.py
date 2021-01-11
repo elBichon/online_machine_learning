@@ -113,7 +113,7 @@ def remove_unique_feature(df):
 
 def hasNumbers(inputString):
 	try:
-		if len(inputSTring) > 0:
+		if len(inputString) > 0:
 			return any(char.isdigit() for char in inputString)
 		else:
 			return False	
