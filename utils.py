@@ -137,4 +137,22 @@ def remove_name(nlp,df):
 		return False
 
 
+def data_encoder(df):
+	try:
+		for col in df.columns: 
+			if df[col].dtype == 'object': 
+				data = list(set(df[col].values.tolist()))
+				dict = {}
+				i = 0
+				while i < len(data):
+					dict[data[i]] = i
+					i += 1
+				df = df.replace(dict)
+			else:
+				pass
+		return(df)
+	except:
+		return False
+
+
 
