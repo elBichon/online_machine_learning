@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import io
 import spacy
+import numpy as np
 
 url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
 s=requests.get(url).content
@@ -154,6 +155,7 @@ def data_encoder(df):
 	except:
 		return False
 
+
 def treat_na(df):
 	try:
 		i = 0 
@@ -165,3 +167,16 @@ def treat_na(df):
 	except: 
 		return False
 
+
+def outliers_removal(df):
+	try:
+		for feature in df.columns: 
+			Q1 = np.percentile(df[feature], q=25) 
+			Q3 = np.percentile(df[feature], q=75) 
+			interquartile_range = Q3-Q1 
+			step = 1.5 * interquartile_range 
+			outliers = [] 
+			df = df.drop(df.index[outliers]).reset_index(drop = True)    
+			return df
+	except:
+		return False
