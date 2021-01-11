@@ -154,5 +154,14 @@ def data_encoder(df):
 	except:
 		return False
 
-
+def treat_na(df):
+	try:
+		i = 0 
+		features_list = df.columns 
+		while i < len(features_list): 
+			df[features_list[i]].fillna(df[features_list[i]].mean()) 
+			i += 1 
+		return df
+	except: 
+		return False
 
