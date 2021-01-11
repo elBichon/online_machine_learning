@@ -44,3 +44,4 @@ def test_remove_unique_feature3():
 	data = {'col_1': [3, 2, 1, 0]}
 	df = pd.DataFrame.from_dict(data)
 	assert isinstance(utils.remove_unique_feature(3),pd.DataFrame) == False
+

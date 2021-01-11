@@ -2,6 +2,7 @@ import re
 import requests
 import pandas as pd
 import io
+import spacy
 
 url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
 s=requests.get(url).content
@@ -108,3 +109,32 @@ def remove_unique_feature(df):
 			return False
 	except:
 		return False
+
+
+def hasNumbers(inputString):
+	try:
+		if len(inputString) > 0:
+			return any(char.isdigit() for char in inputString)
+		else:
+			return False	
+	except:
+		return False
+
+def remove_name(nlp,df):
+	try:
+		columns_to_remove =  []
+		for column in df.columns:
+			if df[column].dtypes == 'object':
+				if hasNumbers(str(df[column].values.tolist()[0]).lower()) == True:
+					pass
+				else:
+					doc = nlp(re.sub("[^a-z]"," ",str(df[column].values.tolist()[0]).lower()))
+					for token in doc:
+						if token.pos_ == 'PROPN' and token.tag_ == 'NNP' and  token.dep_ == 'compound':
+							columns_to_remove.append(column)
+		return(list(set(columns_to_remove)))
+	except:
+		return False
+
+
+
