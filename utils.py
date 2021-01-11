@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import io
 import spacy
+from sklearn.preprocessing import LabelEncoder
 
 url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
 s=requests.get(url).content
@@ -138,3 +139,19 @@ def remove_name(nlp,df):
 
 
 
+def data_encoder(df):
+	try:
+		for col in df.columns: 
+			if df[col].dtype == 'object': 
+				data = list(set(df[col].values.tolist()))
+				dict = {}
+				i = 0
+				while i < len(data):
+					dict[data[i]] = i
+					i += 1
+				df = df.replace(dict)
+			else:
+				pass
+		return(df)
+	except:
+		return False

@@ -1,6 +1,7 @@
 import utils
 import urllib
 import pandas as pd
+import spacy
 
 def test_url_validate():
 	assert utils.url_validate('https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv') == True
@@ -44,3 +45,32 @@ def test_remove_unique_feature3():
 	df = pd.DataFrame.from_dict(data)
 	assert isinstance(utils.remove_unique_feature(3),pd.DataFrame) == False
 
+
+def test_remove_name1():
+	nlp = spacy.load("en_core_web_sm")
+	df = utils.read_csv('https://raw.githubusercontent.com/elBichon/online_machine_learning/main/titanic/train.csv')	
+	if len(utils.remove_name(nlp,df)) == 1:
+		out = True
+	else:
+		out = False
+	assert out == True
+def test_remove_name2():
+	nlp = spacy.load("en_core_web_sm")
+	df = utils.read_csv('https://raw.githubusercontent.com/elBichon/online_machine_learning/main/titanic/train.csv')	
+	df = df[['Survived','PassengerId']]
+	if len(utils.remove_name(nlp,df)) == 0:
+		out = True
+	else:
+		out = False
+	assert out == True
+def test_remove_name3():
+	nlp = spacy.load("en_core_web_sm")
+	df = utils.read_csv('https://raw.githubusercontent.com/elBichon/online_machine_learning/main/titanic/train.csv')	
+	df = df['PassengerId']
+	assert utils.remove_name(nlp,df) == False
+
+def test_data_encoding1():
+	df = pd.read_csv('https://raw.githubusercontent.com/elBichon/online_machine_learning/main/titanic/train.csv')
+	df = data_encoder(df)
+
+	
