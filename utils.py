@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import io
 import spacy
+import numpy as np
 
 url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
 s=requests.get(url).content
