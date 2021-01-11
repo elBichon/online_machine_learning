@@ -155,6 +155,7 @@ def data_encoder(df):
 	except:
 		return False
 
+
 def treat_na(df):
 	try:
 		i = 0 
@@ -169,12 +170,11 @@ def treat_na(df):
 
 def outliers_removal(df):
 	try:
-		for feature in df.keys(): 
-			Q1 = np.percentile(data[feature], q=25) 
-			Q3 = np.percentile(data[feature], q=75) 
+		for feature in df.columns: 
+			Q1 = np.percentile(df[feature], q=25) 
+			Q3 = np.percentile(df[feature], q=75) 
 			interquartile_range = Q3-Q1 
 			step = 1.5 * interquartile_range 
-			display(df[~((df[feature] >= Q1-step) & (df[feature] <= Q3 + step))]) 
 			outliers = [] 
 			df = df.drop(df.index[outliers]).reset_index(drop = True)    
 			return df
