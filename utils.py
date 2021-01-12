@@ -180,3 +180,16 @@ def outliers_removal(df):
 			return df
 	except:
 		return False
+
+
+def remove_colinar_features(target,features,df):
+	try:
+		corr_matrix = df[features].corr(method='spearman').abs()
+		upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+		# Find index of feature columns with correlation greater than 0.95
+		to_drop = [column for column in upper.columns if any(upper[column] < 0.5)]
+		df = df.drop(df[to_drop], axis=1)
+		return df
+	except:
+		return False
+
