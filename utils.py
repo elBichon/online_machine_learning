@@ -5,7 +5,7 @@ import io
 import spacy
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-
+from sklearn.model_selection import train_test_split
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -214,4 +214,11 @@ def scale_data(df):
 	except:
 		return False
 
+
+def create_train_test(df,target):
+	try:
+		X_train, X_test, y_train, y_test = train_test_split(df, df[target],train_size=0.9, test_size=0.1)
+		return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
+	except:
+		return False
 
