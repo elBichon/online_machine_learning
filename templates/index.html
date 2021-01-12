@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+  {% block title %} Comic Search  {% endblock %}
+  {% block content %}
+  <div class="main">
+    <div class="home">
+      <div class="container">
+        <div class="row">
+          <div class="eight columns offset-by-two">
+            <h1 class="headline">
+              <img class = 'logo' src="{{url_for('static', filename='images/logo2.png')}}" align="middle" /></h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="eight columns offset-by-two">
+            <form action='/search' method="post">
+              <input type="text" name="search" placeholder="your url..." value="" class="wiki-search-input" id="wiki-search-input"/>
+              <input type="text" name="search" placeholder="value to predict." value="" class="wiki-search-input" id="wiki-search-input"/>
+              <select name="type" id="type">
+                <option value="regression">regression</option>
+                <option value="classification">classification</option>
+              </select> 
+              <input type="submit" value="Submit">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
+{% endblock %}
