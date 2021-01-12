@@ -6,6 +6,8 @@ import spacy
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from tpot import TPOTRegressor
+from tpot import TPOTClassifier
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -221,4 +223,24 @@ def create_train_test(df,target):
 		return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 	except:
 		return False
+
+def build_regressor(X_train, y_train):
+	try:
+		pipeline_optimizer = TPOTRegressor()
+		pipeline_optimizer = TPOTRegressor(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
+		pipeline_optimizer.fit(X_train, y_train)
+		return pipeline_optimizer
+	except:
+		return False
+
+
+def build_classifier(X_train, y_train):
+	try:
+		pipeline_optimizer = TPOTClassifier()
+		pipeline_optimizer = TPOTClassifier(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
+		pipeline_optimizer.fit(X_train, y_train)
+		return pipeline_optimizer
+	except:
+		return False
+
 
