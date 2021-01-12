@@ -244,3 +244,21 @@ def build_classifier(X_train, y_train):
 		return False
 
 
+def confusion_matrix(y_true,y_pred):
+	try:
+		return confusion_matrix(y_true, y_pred)
+	except:
+		return False
+
+
+def get_accuracy_score(y_true,y_pred):
+	try:
+		return  accuracy_score(y_true, y_pred)
+	except:
+		return False
+
+def get_mean_square_error(y_true,y_pred):
+	try:
+		return mean_squared_error(y_true, y_pred)
+	except:
+		return False
