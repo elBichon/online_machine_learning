@@ -4,10 +4,8 @@ import pandas as pd
 import io
 import spacy
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
-url="https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"
-s=requests.get(url).content
-c=pd.read_csv(io.StringIO(s.decode('utf-8')))
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -204,3 +202,16 @@ def remove_index(df):
 		return df
 	except:
 		return False
+
+
+def scale_data(df):
+	try:
+		scaler = StandardScaler()
+		StandardScaler(copy=True, with_mean=True, with_std=True)
+		scaler.fit(df)
+		df = scaler.transform(df)
+		return df
+	except:
+		return False
+
+
