@@ -18,6 +18,7 @@ from sklearn.metrics import mean_squared_error
 
 app = Flask(__name__, static_folder="static")
 
+
 @app.route("/") 
 def home():
 	return render_template("index.html")
@@ -26,15 +27,14 @@ def home():
 def result_page():
 	try:
 		if request.method == "POST":
-			if len(str(request.form["url"])) > 0 and isinstance(request.form["url"], str) == True and len(str(request.form["target"])) > 0 and  isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification'] == True:
-				print('toto')
+			if len(str(request.form["url"])) > 0 and isinstance(request.form["url"], str) == True and len(str(request.form["target"])) > 0 and isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification'] and utils.url_validate(request.form["url"]) == True and utils.http_check(request.form["url"]) == True:
 				return render_template("result.html")
+			else:
+				return render_template("error.html")
 		else:
-			print('tutu')
 			return render_template("error.html")
 	except:
-			return render_template("error.html")
-
+		return render_template("error.html")
 
 @app.errorhandler(404)
 def page_not_found(e):
