@@ -126,20 +126,17 @@ def hasNumbers(inputString):
 		return False
 
 def remove_name(nlp,df):
-	try:
-		columns_to_remove =  []
-		for column in df.columns:
-			if df[column].dtypes == 'object':
-				if hasNumbers(str(df[column].values.tolist()[0]).lower()) == True:
-					pass
-				else:
-					doc = nlp(re.sub("[^a-z]"," ",str(df[column].values.tolist()[0]).lower()))
-					for token in doc:
-						if token.pos_ == 'PROPN' and token.tag_ == 'NNP' and  token.dep_ == 'compound':
-							columns_to_remove.append(column)
-		return(list(set(columns_to_remove)))
-	except:
-		return False
+	columns_to_remove =  []
+	for column in df.columns:
+		if df[column].dtypes == 'object':
+			if hasNumbers(str(df[column].values.tolist()[0]).lower()) == True:
+				pass
+			else:
+				doc = nlp(re.sub("[^a-z]"," ",str(df[column].values.tolist()[0]).lower()))
+				for token in doc:
+					if token.pos_ == 'PROPN' and token.tag_ == 'NNP' and  token.dep_ == 'compound':
+						columns_to_remove.append(column)
+	return(list(set(columns_to_remove)))
 
 
 def data_encoder(df):
@@ -222,11 +219,10 @@ def scale_data(df):
 
 
 def create_train_test(df,target):
-	try:
-		X_train, X_test, y_train, y_test = train_test_split(df, df[target],train_size=0.9, test_size=0.1)
-		return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
-	except:
-		return False
+	print(target)
+	X_train, X_test, y_train, y_test = train_test_split(df, df[target],train_size=0.9, test_size=0.1)
+	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
+
 
 def build_regressor(X_train, y_train):
 	try:
@@ -236,7 +232,6 @@ def build_regressor(X_train, y_train):
 		return pipeline_optimizer
 	except:
 		return False
-
 
 def build_classifier(X_train, y_train):
 	try:
