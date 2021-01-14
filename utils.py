@@ -183,7 +183,7 @@ def outliers_removal(df):
 		return False
 
 
-def remove_colinar_features(target,features,df):
+def remove_colinar_features(label,features,df):
 	try:
 		corr_matrix = df[features].corr(method='spearman').abs()
 		upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
@@ -218,9 +218,11 @@ def scale_data(df):
 		return False
 
 
-def create_train_test(df,target):
-	print(target)
-	X_train, X_test, y_train, y_test = train_test_split(df, df[target],train_size=0.9, test_size=0.1)
+def create_train_test(df,label):
+	print('================')
+	print(df.columns)
+	print('================')
+	X_train, X_test, y_train, y_test = train_test_split(df, df.label,train_size=0.9, test_size=0.1)
 	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 
 
