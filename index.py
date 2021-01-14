@@ -31,29 +31,32 @@ def result_page():
 				label = request.form["target"]		
 				compute_type = request.form["type"]
 				df = utils.read_csv(url)
-				df = utils.remove_unique_feature(df)
-				df = utils.data_encoder(df)
-				df = utils.remove_index(df)
-				df = utils.treat_na(df)
-				df = utils.outliers_removal(df)
-				target_column = df[label].values.tolist()
-				df = utils.remove_colinar_features(label,df.columns,df)
-				df['label'] = target_column
-				data = utils.create_train_test(df,label)
-				if compute_type == 'classification':
-					normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
-					model = utils.build_classifier(normalized_x_train, data['y_train'])
-					print(model)				
-					features_to_keep = df.drop(label).columns
-					print(features_to_keep)
-					return render_template("result.html")
+				if label in df.columns:
+					df = utils.remove_unique_feature(df)
+					df = utils.data_encoder(df)
+					df = utils.remove_index(df)
+					df = utils.treat_na(df)
+					df = utils.outliers_removal(df)
+					target_column = df[label].values.tolist()
+					df = utils.remove_colinar_features(label,df.columns,df)
+					df['label'] = target_column
+					data = utils.create_train_test(df,label)
+					if compute_type == 'classification':
+						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
+						model = utils.build_classifier(normalized_x_train, data['y_train'])
+						print(model)				
+						features_to_keep = df.drop(label).columns
+						print(features_to_keep)
+						return render_template("result.html")
+					else:
+						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
+						model = utils.build_regressor(data['X_train'], data['y_train'])
+						print(model)
+						features_to_keep = df.drop(label).columns
+						print(features_to_keep)
+						return render_template("result.html")
 				else:
-					normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
-					model = utils.build_regressor(data['X_train'], data['y_train'])
-					print(model)
-					features_to_keep = df.drop(label).columns
-					print(features_to_keep)
-					return render_template("result.html")
+					return render_template("error.html")
 			else:
 				return render_template("error.html")
 		else:
