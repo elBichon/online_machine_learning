@@ -2,6 +2,7 @@ import utils
 import urllib
 import pandas as pd
 
+
 def test_url_validate():
 	assert utils.url_validate('https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv') == True
 def test_url_validate1():
