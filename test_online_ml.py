@@ -1,7 +1,6 @@
 import utils
 import urllib
 import pandas as pd
-import spacy
 
 def test_url_validate():
 	assert utils.url_validate('https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv') == True
