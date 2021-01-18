@@ -2,7 +2,6 @@ import re
 import requests
 import pandas as pd
 import io
-import spacy
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
