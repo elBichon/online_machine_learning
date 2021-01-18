@@ -219,18 +219,16 @@ def scale_data(df):
 
 
 def create_train_test(df,label):
-	print('================')
-	print(df.columns)
-	print('================')
 	X_train, X_test, y_train, y_test = train_test_split(df, df.label,train_size=0.9, test_size=0.1)
 	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 
 
 def build_regressor(X_train, y_train):
 	try:
-		pipeline_optimizer = TPOTRegressor()
-		pipeline_optimizer = TPOTRegressor(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
+		pipeline_optimizer = TPOTClassifier()
+		pipeline_optimizer = TPOTClassifier(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
 		pipeline_optimizer.fit(X_train, y_train)
+		print(pipeline_optimizer)
 		return pipeline_optimizer
 	except:
 		return False
@@ -240,6 +238,7 @@ def build_classifier(X_train, y_train):
 		pipeline_optimizer = TPOTClassifier()
 		pipeline_optimizer = TPOTClassifier(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
 		pipeline_optimizer.fit(X_train, y_train)
+		print(type(pipeline_optimizer))
 		return pipeline_optimizer
 	except:
 		return False
