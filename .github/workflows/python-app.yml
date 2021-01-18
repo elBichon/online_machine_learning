@@ -30,6 +30,7 @@ jobs:
         pip install -U scikit-learn
         pip install TPOT
         pip install Flask
+        pip install gunicorn
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
