@@ -28,7 +28,6 @@ jobs:
         pip install pandas
         pip install numpy
         pip install -U scikit-learn
-        pip install TPOT
         pip install Flask
     - name: Lint with flake8
       run: |
