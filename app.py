@@ -74,7 +74,7 @@ def result_page():
 						    QuadraticDiscriminantAnalysis()]
 						score_list = utils.create_model(names,classifiers,normalized_x_train, data['y_train'],normalized_x_test, data['y_test'])
 						score_index = score_list.index(max(score_list))
-						return render_template("result.html", result = str(classifiers[score_index]))#df.columns.values)
+						return render_template("result.html", result = str(classifiers[score_index]))
 
 					else:
 						names = ["Nearest Neighbors", "Linear RBF", "Linear SVM", "Linear Polynomial", "Decision Tree", "Random Forest", "Neural Net", "AdaBoost"]
@@ -89,7 +89,7 @@ def result_page():
 							AdaBoostRegressor(random_state=0, n_estimators=100)]
 						score_list = utils.create_model(names,regressors,normalized_x_train, data['y_train'],normalized_x_test, data['y_test'])
 						score_index = score_list.index(max(score_list))
-						return render_template("result.html", result = str(regressors[score_index]))#df.columns.values)
+						return render_template("result.html", result = str(regressors[score_index]))
 				else:
 					return render_template("error.html")
 			else:
