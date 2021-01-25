@@ -5,8 +5,6 @@ import io
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-#from tpot import TPOTRegressor
-#from tpot import TPOTClassifier
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -222,26 +220,6 @@ def create_train_test(df,label):
 	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 
 
-#def build_regressor(X_train, y_train):
-#	try:
-#		pipeline_optimizer = TPOTClassifier()
-#		pipeline_optimizer = TPOTClassifier(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
-#		pipeline_optimizer.fit(X_train, y_train)
-#		print(pipeline_optimizer)
-#		return pipeline_optimizer
-#	except:
-#		return False
-
-#def build_classifier(X_train, y_train):
-#	try:
-#		pipeline_optimizer = TPOTClassifier()
-#		pipeline_optimizer = TPOTClassifier(generations=10, population_size=20, cv=5,random_state=42, verbosity=2)
-#		pipeline_optimizer.fit(X_train, y_train)
-#		print(type(pipeline_optimizer))
-#		return pipeline_optimizer
-#	except:
-#		return False
-
 
 def confusion_matrix(y_true,y_pred):
 	try:
@@ -261,4 +239,13 @@ def get_mean_square_error(y_true,y_pred):
 		return mean_squared_error(y_true, y_pred)
 	except:
 		return False
+
+def create_model(names,classifiers,x_train,y_train,x_test,y_test):
+	score_list = []
+	for name, clf in zip(names, classifiers):
+		clf.fit(x_train,y_train)
+		score = clf.score(x_test,y_test)
+		score_list.append(score)
+	return score_list
+
 
