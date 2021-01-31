@@ -1,8 +1,12 @@
-<!doctype html>
+{% extends "base.html" %}
+  {% block title %} Online ML results {% endblock %}
+  {% block content %}
+</br></br>
+ </br></br></br>
+ </br>
+ <div class="container">
 <p>Best features to keep are:</p>
-  <table border = 1>
-    <tr>
-       <th> {{ result }} </th>
-    </tr>
+{{ result }} 
+</div>
+{% endblock %}
 
- </table>
