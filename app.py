@@ -42,8 +42,9 @@ def home():
 def result_page():
 	try:
 		if request.method == "POST":
-			if len(str(request.form["url"])) > 0 and isinstance(request.form["url"], str) == True and len(str(request.form["target"])) > 0 and isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification'] and utils.url_validate(request.form["url"]) == True and utils.http_check(request.form["url"]) == True:
-				url = request.form["url"]
+			url = str(request.form["url"]).rstrip().lstrip()
+			if len(url) > 0 and isinstance(url, str) == True and len(str(request.form["target"])) > 0 and isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification'] and utils.url_validate(url) == True and utils.http_check(url) == True:
+				url = url
 				label = request.form["target"]		
 				compute_type = request.form["type"]
 				df = utils.read_csv(url)
@@ -56,8 +57,6 @@ def result_page():
 					df = utils.outliers_removal(df)
 					target_column = df[label].values.tolist()
 					df = utils.remove_colinar_features(label,df.columns,df)
-					print(df.columns)
-
 					df['label'] = target_column
 					data = utils.create_train_test(df,label)
 					normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
