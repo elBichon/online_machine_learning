@@ -6,7 +6,15 @@
 *disclaimer the no free lunch algorithm stioll applies, generic modeling like this one may not apply to all use cases especially the most subtle ones*
 
 ###Features selection
+- [x] remove unique features
+- [x] remove proper nouns
+- [x] remove features that are linear to each others
+- [x] remove index
 ###Features engineering
+- [x] remove outliers
+- [x] treat NaN
+- [x] data encoding
+- [x] scale data
 ###Use case
 - [x] Classification
 - [x] Regression
