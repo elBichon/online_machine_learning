@@ -58,6 +58,7 @@ URL_PATTERN = re.compile(
 def url_validate(url):
 	try:
 		if len(url) > 0 and isinstance(url,str) == True:
+			url = url.rstrip().lstrip()
 			if re.compile(URL_PATTERN).match(url) != None:                                                                                                                                      
 				return True
 			else:
@@ -85,8 +86,7 @@ def http_check(url):
 
 def read_csv(url):
 	try:
-		if len(url) > 0 and isinstance(url,str) == True: 
-			url = url.rstrip().lstrip()
+		if len(url) > 0 and isinstance(url,str) == True:
 			df = pd.read_csv(url)
 			return df
 		else:
