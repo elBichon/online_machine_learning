@@ -47,6 +47,7 @@ def result_page():
 				label = request.form["target"]		
 				compute_type = request.form["type"]
 				df = utils.read_csv(url)
+				df = df.drop(columns=['Id'])
 				if label in df.columns:
 					df = utils.remove_unique_feature(df)
 					df = utils.data_encoder(df)
@@ -55,6 +56,8 @@ def result_page():
 					df = utils.outliers_removal(df)
 					target_column = df[label].values.tolist()
 					df = utils.remove_colinar_features(label,df.columns,df)
+					print(df.columns)
+
 					df['label'] = target_column
 					data = utils.create_train_test(df,label)
 					normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
@@ -74,7 +77,8 @@ def result_page():
 						    QuadraticDiscriminantAnalysis()]
 						score_list = utils.create_model(names,classifiers,normalized_x_train, data['y_train'],normalized_x_test, data['y_test'])
 						score_index = score_list.index(max(score_list))
-						return render_template("result.html", result = str(classifiers[score_index]))
+						result = 'the best features are: ' + str(df.columns) + ' the best model is ' +str(classifiers[score_index])
+						return render_template("result.html", result = result)
 
 					else:
 						names = ["Nearest Neighbors", "Linear RBF", "Linear SVM", "Linear Polynomial", "Decision Tree", "Random Forest", "Neural Net", "AdaBoost"]
@@ -89,7 +93,8 @@ def result_page():
 							AdaBoostRegressor(random_state=0, n_estimators=100)]
 						score_list = utils.create_model(names,regressors,normalized_x_train, data['y_train'],normalized_x_test, data['y_test'])
 						score_index = score_list.index(max(score_list))
-						return render_template("result.html", result = str(regressors[score_index]))
+						result = 'the best features are: ' + str(df.columns) + ' the best model is ' +str(regressors[score_index])
+						return render_template("result.html", result = result)
 				else:
 					return render_template("error.html")
 			else:
