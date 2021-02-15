@@ -41,3 +41,10 @@ jobs:
         pip install pytest
         pip install pytest-cov
         pytest test_online_ml.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+    - name: Add remote origin
+      if: github.ref == 'ref/heads/main' && jobs.status == 'success'
+      run: |
+        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+    - name: Deploy to heroku
+      run: |
+        git push heroku HEAD:main -f  
