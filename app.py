@@ -29,7 +29,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import AdaBoostRegressor
-
+import re
 
 app = Flask(__name__, static_folder="static")
 
@@ -43,20 +43,23 @@ def result_page():
 	try:
 		if request.method == "POST":
 			url = str(request.form["url"]).rstrip().lstrip()
-			if len(url) > 0 and isinstance(url, str) == True and len(str(request.form["target"])) > 0 and isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification'] and utils.url_validate(url) == True and utils.http_check(url) == True:
-				url = url
-				label = request.form["target"]		
-				compute_type = request.form["type"]
+			if len(url) > 0 and isinstance(url, str) == True and len(str(request.form["target"])) > 0 and isinstance(request.form["target"], str) == True and request.form["type"] in ['regression','classification', 'nlp_en'] and utils.url_validate(url) == True and utils.http_check(url) == True:
+				label = str(request.form["target"])
+				compute_type = str(request.form["type"])
 				df = utils.read_csv(url)
-				df = df.drop(columns=['Id'])
 				if label in df.columns:
 					df = utils.remove_unique_feature(df)
 					df = utils.data_encoder(df)
-					df = utils.remove_index(df)
+					if compute_type != 'nlp_en':
+						df = utils.remove_index(df)
+					else:
+						pass
 					df = utils.treat_na(df)
 					df = utils.outliers_removal(df)
 					target_column = df[label].values.tolist()
-					df = utils.remove_colinar_features(label,df.columns,df)
+					colinear_features = utils.remove_colinar_features(label,df.columns,df)
+					df = df[colinear_features]
+					df = df.drop(columns=label)
 					df['label'] = target_column
 					data = utils.create_train_test(df,label)
 					normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
@@ -78,8 +81,7 @@ def result_page():
 						score_index = score_list.index(max(score_list))
 						result = 'the best features are: ' + str(df.columns) + ' the best model is ' +str(classifiers[score_index])
 						return render_template("result.html", result = result)
-
-					else:
+					elif compute_type == 'regression':
 						names = ["Nearest Neighbors", "Linear RBF", "Linear SVM", "Linear Polynomial", "Decision Tree", "Random Forest", "Neural Net", "AdaBoost"]
 						regressors = [
 							KNeighborsRegressor(n_neighbors=3),
@@ -93,7 +95,11 @@ def result_page():
 						score_list = utils.create_model(names,regressors,normalized_x_train, data['y_train'],normalized_x_test, data['y_test'])
 						score_index = score_list.index(max(score_list))
 						result = 'the best features are: ' + str(df.columns) + ' the best model is ' +str(regressors[score_index])
-						return render_template("result.html", result = result)
+					elif compute_type == 'nlp_en':
+						df = df.drop(['label'], axis=1)
+						text_field = df.columns[0]
+						df = utils.standardize_text(df, text_field)
+					return render_template("result.html", result = result)
 				else:
 					return render_template("error.html")
 			else:
