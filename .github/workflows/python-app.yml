@@ -41,10 +41,9 @@ jobs:
         pip install pytest
         pip install pytest-cov
         pytest test_online_ml.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-    - name: Add remote origin
-      if: github.ref == 'ref/heads/master' && jobs.status == 'success'
-      run: |
-        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-    - name: Deploy to heroku
-      run: |
-        git push heroku HEAD:master -f  
+    - name: Deploy to heroku  
+    - uses: akhileshns/heroku-deploy@v3.11.10 # This is the action
+      with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku
+          heroku_email: "reuglewiczjeanedouard@gmail.com"
