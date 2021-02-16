@@ -183,10 +183,12 @@ def outliers_removal(df):
 
 
 def remove_colinar_features(label,features,df):
-	corr_matrix = df[features].corr(method='spearman').abs()
-	df = corr_matrix.loc[corr_matrix[label] > 0.5]
-	return list(df.index)
-
+	try:
+		corr_matrix = df[features].corr(method='spearman').abs()
+		df = corr_matrix.loc[corr_matrix[label] > 0.5]
+		return list(df.index)
+	except:
+		return False
 
 def remove_index(df):
 	try:
