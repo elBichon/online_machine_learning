@@ -255,19 +255,3 @@ def standardize_text(df, text_field):
 	df[text_field] = df[text_field].str.lower()
 	df[text_field] = df[text_field].str.rstrip().lstrip()
 	return df
-		
-
-def clean_data(df):
-	try:
-		if isinstance(df,pd.DataFrame) == True:
-			nlp = spacy.load('en_core_web_sm')
-			nlp.max_length = 1500000
-			stemmer = SnowballStemmer(language='english')
-			df = remove_stopwords(df)
-			return df
-		else:
-			return False
-	except:
-		return False
-
-
