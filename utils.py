@@ -9,6 +9,7 @@ from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
+import re
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -182,14 +183,9 @@ def outliers_removal(df):
 
 
 def remove_colinar_features(label,features,df):
-	try:
-		corr_matrix = df[features].corr(method='spearman').abs()
-		upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
-		to_drop = [column for column in upper.columns if any(upper[column] < 0.5)]
-		df = df.drop(df[to_drop], axis=1)
-		return df
-	except:
-		return False
+	corr_matrix = df[features].corr(method='spearman').abs()
+	df = corr_matrix.loc[corr_matrix[label] > 0.5]
+	return list(df.index)
 
 
 def remove_index(df):
@@ -221,7 +217,6 @@ def create_train_test(df,label):
 	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 
 
-
 def confusion_matrix(y_true,y_pred):
 	try:
 		return confusion_matrix(y_true, y_pred)
@@ -248,5 +243,29 @@ def create_model(names,classifiers,x_train,y_train,x_test,y_test):
 		score = clf.score(x_test,y_test)
 		score_list.append(score)
 	return score_list
+
+def standardize_text(df, text_field):
+	df[text_field] = df[text_field].str.replace(r"http\S+", "")
+	df[text_field] = df[text_field].str.replace(r"http", "")
+	df[text_field] = df[text_field].str.replace(r"@\S+", "")
+	df[text_field] = df[text_field].str.replace(r"[^A-Za-z0-9(),!?@\'\`\"\_\n]", " ")
+	df[text_field] = df[text_field].str.replace(r"@", "at")
+	df[text_field] = df[text_field].str.lower()
+	df[text_field] = df[text_field].str.rstrip().lstrip()
+	return df
+		
+
+def clean_data(df):
+	try:
+		if isinstance(df,pd.DataFrame) == True:
+			nlp = spacy.load('en_core_web_sm')
+			nlp.max_length = 1500000
+			stemmer = SnowballStemmer(language='english')
+			df = remove_stopwords(df)
+			return df
+		else:
+			return False
+	except:
+		return False
 
 
