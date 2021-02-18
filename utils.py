@@ -12,6 +12,7 @@ from sklearn.metrics import mean_squared_error
 from spacy.lang.en import English
 import re
 from spacy.lang.en.stop_words import STOP_WORDS
+import spacy
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"

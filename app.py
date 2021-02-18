@@ -95,9 +95,9 @@ def result_page():
 						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:100])
 						train_data_features = train_data_features.toarray()[0:100]
 						forest = RandomForestClassifier(random_state=42)
-						param_grid = {'n_estimators': [100],'max_features': ['auto'],'max_depth' : [4,5],'criterion' :['gini']}
+						param_grid = {'n_estimators': [100, 200, 300, 400, 500, 700, 800, 1000],'max_features': ['auto', 'sqrt', 'log2'],'max_depth' : [4,5,6,7,8, 10, 15, 20, 50, 100],'criterion' :['gini', 'entropy']}
 						forest = GridSearchCV(estimator=forest, param_grid=param_grid, cv= 5)
-						forest = forest.fit(train_data_features, df[label][0:100])
+						forest = forest.fit(train_data_features, df[label])
 						print(forest.best_params_)
 						params = forest.best_params_
 						result = 'the best parameters are: ' + str(params)
