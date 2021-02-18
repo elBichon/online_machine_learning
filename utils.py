@@ -9,7 +9,9 @@ from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
+from spacy.lang.en import English
 import re
+from spacy.lang.en.stop_words import STOP_WORDS
 
 # URL-link validation
 ip_middle_octet = u"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5]))"
@@ -247,11 +249,26 @@ def create_model(names,classifiers,x_train,y_train,x_test,y_test):
 	return score_list
 
 def standardize_text(df, text_field):
-	df[text_field] = df[text_field].str.replace(r"http\S+", "")
-	df[text_field] = df[text_field].str.replace(r"http", "")
-	df[text_field] = df[text_field].str.replace(r"@\S+", "")
-	df[text_field] = df[text_field].str.replace(r"[^A-Za-z0-9(),!?@\'\`\"\_\n]", " ")
-	df[text_field] = df[text_field].str.replace(r"@", "at")
-	df[text_field] = df[text_field].str.lower()
-	df[text_field] = df[text_field].str.rstrip().lstrip()
+	try:
+		df[text_field] = df[text_field].str.replace(r"http\S+", "")
+		df[text_field] = df[text_field].str.replace(r"http", "")
+		df[text_field] = df[text_field].str.replace(r"@\S+", "")
+		df[text_field] = df[text_field].str.replace(r"[^A-Za-z0-9]", " ")
+		df[text_field] = df[text_field].str.replace(r"@", "at")
+		df[text_field] = df[text_field].str.replace("  ", " ")
+		df[text_field] = df[text_field].str.lower()
+		df[text_field] = df[text_field].str.rstrip()
+		df[text_field] = df[text_field].str.lstrip()
+	except:
+		return False
+	return df
+
+def encode_target_nlp(df, label):
+	data = list(set(df[label].values.tolist()))
+	dict = {}
+	i = 0
+	while i < len(data):
+		dict[data[i]] = i
+		i += 1
+	df = df.replace(dict)
 	return df
