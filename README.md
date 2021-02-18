@@ -15,9 +15,14 @@
 - [x] treat NaN
 - [x] data encoding
 - [x] scale data
+- [x] clean text data
+- [x] remove stopwords
+- [ ] lemmatization
+- [ ] create bag of words
 ### Use cases
 - [x] Classification
 - [x] Regression
 - [ ] NLP
 - [ ] Time series analysis
 - [ ] Anomaly detection
+- [ ] Explainability
