@@ -27,6 +27,7 @@ jobs:
         pip install -U pip setuptools wheel
         pip install pandas
         pip install numpy
+        pip install -U spacy
         pip install -U scikit-learn
         pip install Flask
         pip install requests
