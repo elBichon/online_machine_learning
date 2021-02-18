@@ -17,12 +17,12 @@
 - [x] scale data
 - [x] clean text data
 - [x] remove stopwords
-- [ ] lemmatization
-- [ ] create bag of words
+- [x] lemmatization
+- [x] create bag of words
 ### Use cases
 - [x] Classification
 - [x] Regression
-- [ ] NLP
+- [x] NLP
 - [ ] Time series analysis
 - [ ] Anomaly detection
 - [ ] Explainability
