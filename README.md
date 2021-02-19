@@ -25,4 +25,3 @@
 - [x] NLP
 - [ ] Time series analysis
 - [ ] Anomaly detection
-- [ ] Explainability
