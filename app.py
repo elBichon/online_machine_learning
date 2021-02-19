@@ -66,8 +66,8 @@ def result_page():
 						df = df.drop(columns=label)
 						df['label'] = target_column
 						data = utils.create_train_test(df,label)
-						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train'][0:10]))
-						normalized_x_test = pd.DataFrame(utils.scale_data(data['X_test'][0:10]))
+						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
+						normalized_x_test = pd.DataFrame(utils.scale_data(data['X_test']))
 						if compute_type == 'classification':
 							names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process","Decision Tree", "Random Forest", "Neural Net", "AdaBoost","Naive Bayes", "QDA"]
 							classifiers = [KNeighborsClassifier(3),SVC(kernel="linear", C=0.025),SVC(gamma=2, C=1),GaussianProcessClassifier(1.0 * RBF(1.0)),DecisionTreeClassifier(max_depth=5),RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),MLPClassifier(alpha=1, max_iter=1000),AdaBoostClassifier(),GaussianNB(),QuadraticDiscriminantAnalysis()]
@@ -95,10 +95,9 @@ def result_page():
 						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:10])
 						train_data_features = train_data_features.toarray()[0:10]
 						forest = RandomForestClassifier(random_state=42)
-						param_grid = {'n_estimators': [100, 500],'max_features': ['auto', 'sqrt'],'max_depth' : [5, 15],'criterion' :['gini', 'entropy']}
+						param_grid = {'n_estimators': [100],'max_features': ['auto'],'max_depth' : [5],'criterion' :['gini']}
 						forest = GridSearchCV(estimator=forest, param_grid=param_grid, cv= 5)
 						forest = forest.fit(train_data_features, df[label][0:10])
-						print(forest.best_params_)
 						params = forest.best_params_
 						result = 'the best parameters are: ' + str(params)
 					return render_template("result.html", result = result)
