@@ -91,12 +91,11 @@ def result_page():
 						df[text_field] = [','.join(map(str, l)) for l in df[text_field]]
 						df[text_field] = df[text_field].str.replace(',',' ')
 						df[text_field] = df[text_field].apply(lambda x: " ".join([y.lemma_ for y in en_core(x)]))
-						vectorizer = CountVectorizer(analyzer = "word",tokenizer = None, preprocessor = None, stop_words = None, max_features = 500) 
+						vectorizer = CountVectorizer(analyzer = "word",tokenizer = None, preprocessor = None, stop_words = None, max_features = 50) 
 						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:5])
 						train_data_features = train_data_features.toarray()[0:5]
-
 						forest = RandomForestClassifier(random_state=42)
-						param_grid = {'n_estimators': [10],'max_features': ['auto'],'max_depth' : [5],'criterion' :['gini']}
+						param_grid = {'n_estimators': [5],'max_features': ['auto'],'max_depth' : [5],'criterion' :['gini']}
 						forest = GridSearchCV(estimator=forest, param_grid=param_grid)
 						forest = forest.fit(train_data_features, df[label][0:5])
 						params = forest.best_params_
