@@ -65,9 +65,9 @@ def result_page():
 						df = df[colinear_features]
 						df = df.drop(columns=label)
 						df['label'] = target_column
-						data = utils.create_train_test(df,label)[0:10]
-						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
-						normalized_x_test = pd.DataFrame(utils.scale_data(data['X_test']))
+						data = utils.create_train_test(df,label)
+						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train'][0:10]))
+						normalized_x_test = pd.DataFrame(utils.scale_data(data['X_test'][0:10]))
 						if compute_type == 'classification':
 							names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process","Decision Tree", "Random Forest", "Neural Net", "AdaBoost","Naive Bayes", "QDA"]
 							classifiers = [KNeighborsClassifier(3),SVC(kernel="linear", C=0.025),SVC(gamma=2, C=1),GaussianProcessClassifier(1.0 * RBF(1.0)),DecisionTreeClassifier(max_depth=5),RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),MLPClassifier(alpha=1, max_iter=1000),AdaBoostClassifier(),GaussianNB(),QuadraticDiscriminantAnalysis()]
