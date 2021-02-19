@@ -218,7 +218,7 @@ def scale_data(df):
 
 
 def create_train_test(df,label):
-	X_train, X_test, y_train, y_test = train_test_split(df, df.label,train_size=0.9, test_size=0.1)
+	X_train, X_test, y_train, y_test = train_test_split(df[0:100], df.label[0:100],train_size=0.9, test_size=0.1)
 	return {'X_train':X_train, 'X_test':X_test, 'y_train':y_train, 'y_test':y_test}
 
 
