@@ -94,12 +94,14 @@ def result_page():
 						vectorizer = CountVectorizer(analyzer = "word",tokenizer = None, preprocessor = None, stop_words = None, max_features = 5000) 
 						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:10])
 						train_data_features = train_data_features.toarray()[0:10]
+
 						forest = RandomForestClassifier(random_state=42)
 						param_grid = {'n_estimators': [10],'max_features': ['auto'],'max_depth' : [5],'criterion' :['gini']}
-						forest = GridSearchCV(estimator=forest, param_grid=param_grid, cv= 3)
+						forest = GridSearchCV(estimator=forest, param_grid=param_grid)
 						forest = forest.fit(train_data_features, df[label][0:10])
 						params = forest.best_params_
-						result = 'the best parameters are: ' + str(params)
+						result = 'Due to limitation of heroku, grid search is done with single parameters and 1 fold cross-validation (I know this does not make sense) the best parameters are: ' + str(params)
+						#result = 'Due to the limitations of heroku, for now it is static and defaut implementation of random forest by sklearn'
 					return render_template("result.html", result = result)
 				else:
 					return render_template("error.html")
