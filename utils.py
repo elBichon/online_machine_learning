@@ -244,8 +244,8 @@ def get_mean_square_error(y_true,y_pred):
 def create_model(names,classifiers,x_train,y_train,x_test,y_test):
 	score_list = []
 	for name, clf in zip(names, classifiers):
-		clf.fit(x_train[0:10],y_train[0:10])
-		score = clf.score(x_test[0:10],y_test[0:10])
+		clf.fit(x_train,y_train)
+		score = clf.score(x_test,y_test)
 		score_list.append(score)
 	return score_list
 
