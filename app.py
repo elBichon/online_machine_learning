@@ -65,7 +65,7 @@ def result_page():
 						df = df[colinear_features]
 						df = df.drop(columns=label)
 						df['label'] = target_column
-						data = utils.create_train_test(df,label)
+						data = utils.create_train_test(df,label)[0:10]
 						normalized_x_train = pd.DataFrame(utils.scale_data(data['X_train']))
 						normalized_x_test = pd.DataFrame(utils.scale_data(data['X_test']))
 						if compute_type == 'classification':
@@ -92,12 +92,12 @@ def result_page():
 						df[text_field] = df[text_field].str.replace(',',' ')
 						df[text_field] = df[text_field].apply(lambda x: " ".join([y.lemma_ for y in en_core(x)]))
 						vectorizer = CountVectorizer(analyzer = "word",tokenizer = None, preprocessor = None, stop_words = None,   max_features = 5000) 
-						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:50])
-						train_data_features = train_data_features.toarray()[0:50]
+						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:10])
+						train_data_features = train_data_features.toarray()[0:10]
 						forest = RandomForestClassifier(random_state=42)
 						param_grid = {'n_estimators': [100, 500],'max_features': ['auto', 'sqrt'],'max_depth' : [5, 15],'criterion' :['gini', 'entropy']}
 						forest = GridSearchCV(estimator=forest, param_grid=param_grid, cv= 5)
-						forest = forest.fit(train_data_features, df[label][0:100])
+						forest = forest.fit(train_data_features, df[label][0:10])
 						print(forest.best_params_)
 						params = forest.best_params_
 						result = 'the best parameters are: ' + str(params)
