@@ -92,8 +92,8 @@ def result_page():
 						df[text_field] = df[text_field].str.replace(',',' ')
 						df[text_field] = df[text_field].apply(lambda x: " ".join([y.lemma_ for y in en_core(x)]))
 						vectorizer = CountVectorizer(analyzer = "word",tokenizer = None, preprocessor = None, stop_words = None,   max_features = 5000) 
-						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:100])
-						train_data_features = train_data_features.toarray()[0:100]
+						train_data_features = vectorizer.fit_transform(df[text_field].values.tolist()[0:50])
+						train_data_features = train_data_features.toarray()[0:50]
 						forest = RandomForestClassifier(random_state=42)
 						param_grid = {'n_estimators': [100, 500],'max_features': ['auto', 'sqrt'],'max_depth' : [5, 15],'criterion' :['gini', 'entropy']}
 						forest = GridSearchCV(estimator=forest, param_grid=param_grid, cv= 5)
