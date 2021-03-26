@@ -274,5 +274,3 @@ def encode_target_nlp(df, label):
 	df = df.replace(dict)
 	return df
 
-def hello_world():
-	return 'hello world'
